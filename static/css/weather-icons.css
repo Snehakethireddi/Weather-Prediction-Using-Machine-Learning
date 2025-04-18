@@ -1,0 +1,29 @@
+/* Weather Icons */
+@font-face {
+    font-family: 'Weather Icons';
+    src: url('https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.12/font/weathericons-regular-webfont.eot');
+    src: url('https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.12/font/weathericons-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.12/font/weathericons-regular-webfont.woff2') format('woff2'),
+         url('https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.12/font/weathericons-regular-webfont.woff') format('woff'),
+         url('https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.12/font/weathericons-regular-webfont.ttf') format('truetype'),
+         url('https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.12/font/weathericons-regular-webfont.svg#weathericons-regular-webfont') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.wi {
+    display: inline-block;
+    font-family: 'Weather Icons';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.wi-day-sunny:before { content: "\f00d"; }
+.wi-rain:before { content: "\f019"; }
+.wi-cloudy:before { content: "\f013"; }
+.wi-snow:before { content: "\f01b"; }
+.wi-thunderstorm:before { content: "\f01e"; }
+.wi-day-cloudy-high:before { content: "\f002"; }

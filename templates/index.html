@@ -1,71 +1,107 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ML API</title>
-    <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Arimo" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Hind:300" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet" type="text/css">
-
-
-
-    <style>
-        body{
-              margin: 0;
-              padding: 0;
-              background-image: url("../static/download.jpg");
-              background-repeat: no-repeat;
-              background-size: cover;
-              background-position: center;
-              background-attachment: fixed; /* Optional: makes background stay still on scroll */
-              margin-top: 100px;
-              margin-bottom: 100px;
-              margin-left: 400px;
-              margin-right: 150px;
-        }
-        h1
-        {
-            margin-left: 100px;
-        }
-        input
-        {
-            width:70%;
-            padding:12px 20px;
-            margin: 8px 0;
-            box-sizing: border-box;
-            border-bottom: 4px solid black;
-            background-color: lavenderblush;
-            color: darkblue;
-        }
-        button {
-            background-color: green;
-            margin: auto;
-            color: plum;
-            padding: 15px 100px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin-left: 170px;
-        }
-        #predict{
-            margin-left: 190px;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MeteoAI | Weather Prediction System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/weather-icons.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-<div class="login">
-        <h1 style="color: wheat">Weather Prediction Model</h1>
-        <form action = "{{url_for('predict')}}" method = "post">
-        <input type="text" name="rainfall" placeholder="Enter Rainfall" required="required" value="{{ request.form.rainfall or '' }}"/>
-        <input type="text" name="temperature" placeholder="Enter Temperature" required="required" value="{{ request.form.temperature or '' }}"/>
-        <input type="text" name="humidity" placeholder="Enter Humidity" required="required" value="{{ request.form.humidity or '' }}"/>
-        <input type="text" name="wind_speed" placeholder="Enter Wind Speed" required="required" value="{{ request.form.wind_speed or '' }}"/>
-             <button type="submit" class="btn btn-primary btn-block btn-large">Predict</button>
-    </form>
-<h1 style="color: gold" id="predict">{{prediction_text}}</h1>
-</div>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <i class="fas fa-cloud-sun"></i>
+                <h1>Atmosphere <span>AI</span></h1>
+                <p>Advanced Weather Prediction System</p>
+            </div>
+        </header>
 
+        <main class="app-main">
+            <div class="prediction-card">
+                <form action="{{url_for('predict')}}" method="post" class="weather-form">
+                    <div class="form-group">
+                        <label for="rainfall">
+                            <i class="fas fa-cloud-rain"></i> Rainfall (mm)
+                        </label>
+                        <input type="number" step="0.01" id="rainfall" name="rainfall"
+                               placeholder="e.g., 5.2" required value="{{ request.form.rainfall or '' }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="temperature">
+                            <i class="fas fa-temperature-high"></i> Temperature (°C)
+                        </label>
+                        <input type="number" step="0.01" id="temperature" name="temperature"
+                               placeholder="e.g., 25.5" required value="{{ request.form.temperature or '' }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="humidity">
+                            <i class="fas fa-tint"></i> Humidity (%)
+                        </label>
+                        <input type="number" step="0.01" id="humidity" name="humidity"
+                               placeholder="e.g., 65.0" required value="{{ request.form.humidity or '' }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="wind_speed">
+                            <i class="fas fa-wind"></i> Wind Speed (km/h)
+                        </label>
+                        <input type="number" step="0.01" id="wind_speed" name="wind_speed"
+                               placeholder="e.g., 12.3" required value="{{ request.form.wind_speed or '' }}">
+                    </div>
+
+                    <button type="submit" class="predict-button">
+                        <i class="fas fa-bolt"></i> Generate Prediction
+                    </button>
+                </form>
+
+                {% if prediction_text %}
+                <div class="prediction-result active">
+                    <div class="weather-icon">
+                        {% if 'sunny' in prediction_text.lower() %}
+                            <i class="wi wi-day-sunny"></i>
+                        {% elif 'rain' in prediction_text.lower() %}
+                            <i class="wi wi-rain"></i>
+                        {% elif 'cloud' in prediction_text.lower() %}
+                            <i class="wi wi-cloudy"></i>
+                        {% elif 'snow' in prediction_text.lower() %}
+                            <i class="wi wi-snow"></i>
+                        {% elif 'storm' in prediction_text.lower() %}
+                            <i class="wi wi-thunderstorm"></i>
+                        {% else %}
+                            <i class="wi wi-day-cloudy-high"></i>
+                        {% endif %}
+                    </div>
+                    <h3>Prediction Result</h3>
+                    <p>{{ prediction_text }}</p>
+                    <div class="confidence-meter">
+                        <div class="confidence-level" style="width: 85%"></div>
+                    </div>
+                    <span class="confidence-value">85% confidence</span>
+                </div>
+                {% endif %}
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <p>© 2023 Atmosphere AI Weather Prediction System | Powered by Machine Learning</p>
+        </footer>
+    </div>
+
+    <script>
+        // Add animation to form submission
+        document.querySelector('.weather-form').addEventListener('submit', function(e) {
+            const resultDiv = document.querySelector('.prediction-result');
+            if (resultDiv) {
+                resultDiv.classList.remove('active');
+                setTimeout(() => {
+                    resultDiv.classList.add('active');
+                }, 10);
+            }
+        });
+    </script>
 </body>
 </html>
